@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Меню ресторана</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<script src="/js/token-check.js"></script>
+<!-- Подключение общего header -->
+<header th:replace="~{includes/header :: header}"></header>
+
+<!-- Основной контент страницы меню -->
+<section class="menu container mt-4">
+    <h2 class="mb-4">Меню ресторана</h2>
+
+    <!-- Форма поиска -->
+    <form id="searchForm" th:action="@{/menu/search}" method="post" class="p-4 bg-light border rounded shadow-sm">
+        <h4 class="mb-4">Поиск по меню</h4>
+        <div class="row">
+            <!-- Поле для ввода названия -->
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="name" class="font-weight-bold">Название</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Введите название">
+                </div>
+            </div>
+
+            <!-- Выпадающий список для выбора категории -->
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="category" class="font-weight-bold">Категория</label>
+                    <select id="category" name="category" class="form-control">
+                        <option value="">Все категории</option>
+                        <option th:each="cat : ${categories}" th:value="${cat.name}" th:text="${cat.name}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Поле для ввода максимальной цены -->
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="price" class="font-weight-bold">Максимальная цена</label>
+                    <input type="number" id="price" name="price" class="form-control" step="0.01" placeholder="Введите цену">
+                </div>
+            </div>
+        </div>
+
+        <!-- Кнопки управления -->
+        <div class="d-flex justify-content-end">
+            <button type="reset" class="btn btn-secondary mr-2">Очистить</button>
+            <button type="submit" class="btn btn-primary">Найти</button>
+        </div>
+    </form>
+
+
+    <!-- Кнопка добавления нового блюда -->
+    <div class="mb-4 mt-3"> <!-- Добавлен класс mt-3 для отступа сверху -->
+        <a class="btn btn-success" href="/home/menu/add" role="button">Добавить блюдо</a>
+    </div>
+
+
+    <!-- Контейнер для карточек меню -->
+    <div id="menuContainer" class="row" th:fragment="menuContainer"></div>
+</section>
+
+
+<!-- Подключение общего футера -->
+<footer th:replace="includes/footer :: footer"></footer>
+<!-- Скрипты -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/js/menu.js"></script>
+<script src="/js/url-init.js"></script>
+<script src="/js/logout.js"></script>
+
+</body>
+</html>

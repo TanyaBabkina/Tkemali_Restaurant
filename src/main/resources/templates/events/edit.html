@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Редактировать мероприятие</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:replace="~{includes/header :: header}"></header>
+
+<section class="container mt-4">
+  <h2>Редактировать мероприятие</h2>
+  <form id="editEventForm" method="POST" th:action="@{/home/events/edit/{id}(id=${event.id})}">
+    <!-- Основная информация о событии -->
+    <div class="form-group">
+      <label for="eventName">Название события</label>
+      <input type="text" id="eventName" name="eventName" class="form-control" th:value="${event.eventName}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="eventDate">Дата события</label>
+      <input type="datetime-local" id="eventDate" name="eventDate" class="form-control"
+             th:value="${#temporals.format(event.eventDate, 'yyyy-MM-dd''T''HH:mm')}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="numberOfGuests">Количество гостей</label>
+      <input type="number" id="numberOfGuests" name="numberOfGuests" class="form-control" th:value="${event.numberOfGuests}" min="1" required>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Описание</label>
+      <textarea id="description" name="description" class="form-control" rows="3" th:text="${event.description}"></textarea>
+    </div>
+
+    <!-- Редактирование планов -->
+    <h4 class="mt-4">Планирование мероприятия</h4>
+    <div id="eventPlanningContainer" class="mb-4">
+      <div th:if="${#lists.isEmpty(menuItems)}">
+        <p class="text-danger">Список меню пуст. Добавьте элементы в меню перед планированием мероприятия.</p>
+      </div>
+      <div th:each="planning, stat : ${event.eventPlannings}" class="event-planning row mb-3">
+        <div class="col-md-6">
+          <label th:for="'menuItem' + ${stat.index}">Меню</label>
+          <select th:id="'menuItem' + ${stat.index}"
+                  th:name="'eventPlannings[' + ${stat.index} + '].menuId'"
+                  class="form-control" required>
+            <option value="" disabled>Выберите элемент меню</option>
+            <option th:each="item : ${menuItems}"
+                    th:value="${item.id}"
+                    th:text="${item.name}"
+                    th:selected="${item.id == planning.menu.id}"></option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label th:for="'quantity' + ${stat.index}">Количество</label>
+          <input type="number" th:id="'quantity' + ${stat.index}"
+                 th:name="'eventPlannings[' + ${stat.index} + '].quantity'"
+                 class="form-control"
+                 th:value="${planning.quantity}" min="1" required>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+          <button type="button" class="btn btn-danger btn-sm remove-planning-button">Удалить</button>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" id="addPlanningButton" class="btn btn-secondary">Добавить план</button>
+    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+    <a href="/home/events" class="btn btn-secondary">Отмена</a>
+  </form>
+</section>
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  const menuItems = /*[[${menuItems}]]*/ [];
+  /*]]>*/
+</script>
+<script src="/js/token-check.js"></script>
+<script src="/js/event-edit.js"></script> <!-- Подключаем внешний JS -->
+<script src="/js/url-init.js"></script>
+<script src="/js/logout.js"></script>
+
+</body>
+</html>

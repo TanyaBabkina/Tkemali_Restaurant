@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Профиль пользователя</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:replace="~{includes/header :: header}"></header>
+<div class="container mt-4">
+    <h1 class="mb-4">Профиль пользователя</h1>
+    <form id="profileForm" th:action="@{/home/users/${user.email}}" th:object="${user}" method="post">
+        <div class="form-group">
+            <label for="fullName">Полное имя</label>
+            <input type="text" id="userFullName" class="form-control" th:field="*{fullName}" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="userEmail" class="form-control" th:field="*{email}" readonly required>
+        </div>
+        <div class="form-group">
+            <label for="phoneNumber">Номер телефона</label>
+            <input type="text" id="userPhoneNumber" class="form-control" th:field="*{phoneNumber}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+    </form>
+
+    <h2 class="mt-4">Изменить пароль</h2>
+    <form id="userPasswordForm" th:action="@{/home/users/{email}/password(email=${user.email})}" method="post">
+        <div class="form-group">
+            <label for="userNewPassword">Новый пароль</label>
+            <input type="password" id="userNewPassword" class="form-control" name="userNewPassword" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Изменить пароль</button>
+    </form>
+</div>
+
+<div class="container">
+    <h1 class="mt-5">Список пользователей</h1>
+
+    <table class="table mt-3">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Полное имя</th>
+            <th>Телефон</th>
+            <th>Почта</th>
+            <th>Роль</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="userItem : ${users}">
+            <td th:text="${userItem.id}"></td>
+            <td th:text="${userItem.fullName}"></td>
+            <td th:text="${userItem.phoneNumber}"></td>
+            <td th:text="${userItem.email}"></td>
+            <td>
+                <form th:action="@{/home/users/update/{id}(id=${userItem.id})}" method="post" class="form-inline" >
+                    <select name="role" onchange="this.form.submit()"  class="form-control" th:disabled="${userItem.email == user.email}">
+                        <option value="USER" th:selected="${userItem.getRole().toString() == 'USER'}">Пользователь</option>
+                        <option value="ADMIN" th:selected="${userItem.getRole().toString() == 'ADMIN'}" >Администратор</option>
+                    </select>
+                </form>
+            </td>
+
+            <td>
+                <button class="btn btn-danger btn-sm" th:onclick="'deleteUser(' + ${userItem.id} + '); return false;'" th:disabled="${userItem.email == user.email}">Удалить</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2 class="mt-5">Добавить нового пользователя</h2>
+    <form id="addUserForm" autocomplete="off">
+        <div class="form-group">
+            <label for="fullName">Полное имя:</label>
+            <input type="text" id="fullName" name="fullName" class="form-control" required/>
+        </div>
+        <div class="form-group">
+            <label for="phoneNumber">Номер телефона:</label>
+            <input type="text" id="phoneNumber" name="phoneNumber" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="email">Почта:</label>
+            <input type="email" id="email" name="email" class="form-control" required/>
+            <div class="invalid-feedback" id="emailError"></div> <!-- Для отображения ошибки -->
+        </div>
+        <div class="form-group">
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" class="form-control" required/>
+        </div>
+
+        <button type="submit" class="btn btn-success">Добавить пользователя</button>
+    </form>
+
+    <!-- Отображение сообщения об ошибке -->
+    <div id="generalErrorMessage" class="alert alert-danger mt-3 d-none" role="alert"></div>
+</div>
+
+<footer th:replace="includes/footer :: footer"></footer>
+<script src="/js/logout.js"></script>
+<script src="/js/profile-scripts.js"></script>
+<script src="/js/url-init.js"></script>
+<script src="/js/auth.js" defer></script>
+<script src="/js/token-check.js"></script>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

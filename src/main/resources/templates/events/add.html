@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить мероприятие</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<section class="container mt-4">
+    <h2>Добавить новое мероприятие</h2>
+    <form id="addEventForm" method="POST" action="/home/events/add">
+        <!-- Основная информация о событии -->
+        <div class="form-group">
+            <label for="eventName">Название события</label>
+            <input type="text" id="eventName" name="eventName" class="form-control" placeholder="Введите название" required>
+        </div>
+
+        <div class="form-group">
+            <label for="eventDate">Дата события</label>
+            <input type="datetime-local" id="eventDate" name="eventDate" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="numberOfGuests">Количество гостей</label>
+            <input type="number" id="numberOfGuests" name="numberOfGuests" class="form-control" min="1" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Описание</label>
+            <textarea id="description" name="description" class="form-control" rows="3"></textarea>
+        </div>
+
+        <!-- Добавление деталей event_planning -->
+        <h4 class="mt-4">Планирование мероприятия</h4>
+        <div id="eventPlanningContainer" class="mb-4">
+            <div class="event-planning row mb-3">
+                <div class="col-md-6">
+                    <label for="menuItem0">Меню</label>
+                    <select id="menuItem0" name="eventPlannings[0].menuId" class="form-control menu-select" required>
+                        <option th:each="item : ${menuItems}" th:value="${item.id}" th:text="${item.name}"></option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="quantity0">Количество</label>
+                    <input type="number" id="quantity0" name="eventPlannings[0].quantity" class="form-control quantity-input" min="1" required>
+                </div>
+                <div class="col-md-3">
+                    <button type="button" class="btn btn-danger btn-sm remove-plan-button mt-4">Удалить</button>
+                </div>
+            </div>
+        </div>
+
+        </div>
+
+        <!-- Кнопка добавления нового плана -->
+        <button type="button" id="addPlanningButton" class="btn btn-secondary">Добавить план</button>
+
+        <!-- Кнопка сохранения -->
+        <button type="submit" class="btn btn-primary">Сохранить событие</button>
+        <a href="/home/events" class="btn btn-secondary">Отмена</a>
+    </form>
+</section>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const menuItems = /*[[${menuItems}]]*/ [];
+    /*]]>*/
+</script>
+<script src="/js/token-check.js"></script>
+<script src="/js/event-add.js"></script>
+<script src="/js/url-init.js"></script>
+<script src="/js/logout.js"></script>
+</body>
+</html>

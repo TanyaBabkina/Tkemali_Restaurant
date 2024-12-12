@@ -1,0 +1,44 @@
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="header">
+    <a class="navbar-brand" href="/">Tkemali</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="btn btn-outline-primary rounded mx-1" th:href="@{/home}" th:classappend="${currentPath == '/home'} ? 'active'">Главная</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="btn btn-outline-primary rounded mx-1" th:href="@{/home/menu}" th:classappend="${currentPath == '/home/menu'} ? 'active'">Меню</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-outline-primary rounded mx-1" th:href="@{/home/orders}" th:classappend="${currentPath == '/home/orders'} ? 'active'">Заказы</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-outline-primary rounded mx-1" th:href="@{/home/events}" th:classappend="${currentPath == '/home/events'} ? 'active'">Бронирование</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-outline-primary rounded mx-1" id="profileLink" th:classappend="${currentPath == '/home/users'}">
+                    <i class="fas fa-user"></i> Профиль
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-outline-primary rounded mx-1" th:href="@{/home/about}" th:classappend="${currentPath == '/home/about'} ? 'active'">Об авторе</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-outline-primary rounded mx-1" id="logout" th:href="@{/logout}" th:classappend="${currentPath == '/logout'} ? 'active'">Выход</a>
+            </li>
+<!--            <li class="nav-item">-->
+<!--                <a class="btn btn-outline-primary rounded mx-1" th:href="@{/home/userslist}" th:classappend="${currentPath == '/home/userslist'} ? 'active'">Пользователи</a>-->
+<!--            </li>-->
+        </ul>
+    </div>
+</nav>
+<!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+<script src="/js/logout.js"></script>
+<!-- Include Font Awesome CSS -->
+<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">-->
+

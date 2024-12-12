@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Заказы</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<script src="/js/token-check.js"></script>
+<!-- Подключение общего header -->
+<header th:replace="~{includes/header :: header}"></header>
+
+<section class="orders container mt-4">
+    <h2 class="mb-4">Заказы</h2>
+    <!-- Кнопка добавления заказа -->
+    <div class="mb-3">
+        <a class="btn btn-success" href="/home/orders/add">Добавить заказ</a>
+    </div>
+
+    <!-- Таблица заказов -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Имя клиента</th>
+                <th>
+                    Дата
+                    <button type="button" id="sortDateBtn" class="btn btn-sm btn-light ml-2">↑↓</button>
+                </th>
+                <th>Статус</th>
+                <th>Итог (₽)</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody id="eventsTableBody">
+            <tr th:each="order : ${orders}">
+                <td th:text="${order.id}"></td>
+                <td th:text="${order.customerName}"></td>
+                <td th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm')}" th:attr="data-date=${order.orderDate}"></td>
+                <td>
+                    <span th:if="${order.status.toString() == 'В_ОЖИДАНИИ'}" th:text="'В ожидании'"></span>
+                    <span th:if="${order.status.toString() == 'ЗАВЕРШЕН'}" th:text="'Завершен'"></span>
+                    <span th:if="${order.status.toString() == 'ВЫПОЛНЯЕТСЯ'}" th:text="'Выполняется'"></span>
+                    <span th:if="${order.status.toString() == 'ОТМЕНЕН'}" th:text="'Отменен'"></span>
+                </td>
+                <td th:text="${order.totalPrice}"></td>
+                <td>
+                    <button class="btn btn-info btn-sm" th:data-order-id="${order.id}" onclick="loadOrderDetails(this)" data-toggle="modal" data-target="#orderDetailsModal">︙</button>
+                    <a th:href="@{/home/orders/edit/{id}(id=${order.id})}" class="btn btn-warning btn-sm">✏️</a>
+                    <a th:href="@{/home/orders/delete/{id}(id=${order.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Удалить заказ?');">🗑️</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Пагинация -->
+    <nav aria-label="Навигация по страницам" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <!-- Previous Page Link -->
+            <li th:classappend="${currentPage == 0} ? 'disabled'" class="page-item">
+                <a th:href="@{/home/orders(page=${currentPage - 1}, size=${size})}" class="page-link">Назад</a>
+            </li>
+
+            <!-- Page Number Links -->
+            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:classappend="${i == currentPage} ? 'active'" class="page-item">
+                <a th:href="@{/home/orders(page=${i}, size=${size})}" class="page-link" th:text="${i + 1}"></a>
+            </li>
+
+            <!-- Next Page Link -->
+            <li th:classappend="${currentPage == totalPages - 1} ? 'disabled'" class="page-item">
+                <a th:href="@{/home/orders(page=${currentPage + 1}, size=${size})}" class="page-link">Вперед</a>
+            </li>
+        </ul>
+    </nav>
+
+
+    <!-- Гистограмма заказов по статусам -->
+    <h4 class="mt-5">Гистограмма заказов по статусам</h4>
+    <canvas id="orderStatusChart" width="400" height="200"></canvas>
+</section>
+
+<!-- Модальное окно для деталей заказа -->
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderDetailsModalLabel">Детали заказа</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="orderDetailsContent">Загрузка...</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Скрипты -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const orderStatusData = /*[[${orderStatusData}]]*/ [];
+    const labels = Object.keys(orderStatusData);
+    const data = Object.values(orderStatusData);
+    /*]]>*/
+
+    const ctx = document.getElementById('orderStatusChart').getContext('2d');
+
+
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Количество заказов',
+                data: data,
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Количество заказов'
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/js/order-details.js"></script>
+<script src="/js/sort.js"></script>
+<script src="/js/url-init.js"></script>
+<script src="/js/logout.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить заказ</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<script src="/js/token-check.js"></script>
+<!-- Подключение общего header -->
+<header th:replace="~{includes/header :: header}"></header>
+
+<!-- Основной контент страницы -->
+<section class="container mt-4">
+    <h2 class="mb-4">Добавить новый заказ</h2>
+
+    <form id="addOrderForm" method="POST" action="/home/orders/add">
+        <!-- Основная информация о заказе -->
+        <div class="form-group">
+            <label for="customerName">Имя клиента</label>
+            <input type="text" id="customerName" name="customerName" class="form-control" placeholder="Введите имя клиента" required>
+        </div>
+
+        <div class="form-group">
+            <label for="orderDate">Дата заказа</label>
+            <input type="datetime-local" id="orderDate" name="orderDate" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="status">Статус</label>
+            <select id="status" name="status" class="form-control" required>
+                <option value="В_ОЖИДАНИИ" >В ожидании</option>
+                <option value="ЗАВЕРШЕН" >Завершен</option>
+                <option value="ВЫПОЛНЯЕТСЯ" >Выполняется</option>
+                <option value="ОТМЕНЕН">Отменен</option>
+            </select>
+        </div>
+
+        <!-- Добавление деталей заказа -->
+        <h4 class="mt-4">Детали заказа</h4>
+        <div id="orderDetailsContainer" class="mb-4">
+            <!-- Первый блок деталей по умолчанию -->
+            <div class="order-detail row mb-3">
+                <div class="col-md-5">
+                    <label for="menuItem0">Блюдо</label>
+                    <select id="menuItem0" name="orderDetails[0].menuItemId" class="form-control" required>
+                        <option th:each="item : ${menuItems}" th:value="${item.id}" th:text="${item.name}"></option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="quantity0">Количество</label>
+                    <input type="number" id="quantity0" name="orderDetails[0].quantity" class="form-control" min="1" value="1" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="price0">Цена</label>
+                    <input type="text" id="price0" class="form-control" value="0" readonly>
+                </div>
+                <div class="col-md-1 d-flex align-items-end">
+                    <button type="button" class="btn btn-danger btn-sm remove-detail-button">Удалить</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Кнопка добавления еще одной детали -->
+        <button type="button" id="addDetailButton" class="btn btn-secondary">Добавить блюдо</button>
+
+        <!-- Кнопка сохранения заказа -->
+        <button type="submit" class="btn btn-primary">Сохранить заказ</button>
+        <a href="/home/orders" class="btn btn-secondary">Отмена</a>
+    </form>
+</section>
+
+<!-- Подключение общего footer -->
+<footer th:replace="includes/footer :: footer"></footer>
+
+<!-- Скрипты -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const menuItems = /*[[${menuItems}]]*/ [];
+    /*]]>*/
+</script>
+<script src="/js/add-order.js"></script>
+<script src="/js/url-init.js"></script>
+<script src="/js/logout.js"></script>
+
+</body>
+</html>

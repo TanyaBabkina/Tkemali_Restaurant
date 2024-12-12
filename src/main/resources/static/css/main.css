@@ -1,0 +1,57 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.main-banner {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url('/img/background.jpg') no-repeat center center;
+    background-size: cover;
+    color: white;
+    padding: 100px 0;
+    text-align: center;
+}
+
+.main-banner h1 {
+    font-size: 3em;
+    margin-bottom: 0.5em;
+}
+
+.main-banner p {
+    font-size: 1.5em;
+}
+
+.special-offer {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.special-offer h2 {
+    font-size: 2.5em;
+    margin-bottom: 0.5em;
+}
+
+.special-offer p {
+    font-size: 1.2em;
+}
+
+.popular-dishes h2 {
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 2em;
+}
+
+.card {
+    margin-bottom: 2em;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-title {
+    font-size: 1.5em;
+}
+
+.card-text {
+    font-size: 1em;
+}

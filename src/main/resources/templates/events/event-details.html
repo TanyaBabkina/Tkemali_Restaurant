@@ -1,0 +1,24 @@
+<div th:fragment="details">
+    <h4>Детали мероприятия</h4>
+    <p><strong>Название:</strong> <span th:text="${event.eventName}"></span></p>
+    <p><strong>Дата:</strong> <span th:text="${#temporals.format(event.eventDate, 'yyyy-MM-dd HH:mm')}"></span></p>
+    <p><strong>Количество гостей:</strong> <span th:text="${event.numberOfGuests}"></span></p>
+    <p><strong>Описание:</strong></p>
+    <p th:text="${event.description}"></p>
+
+    <h5 class="mt-3">План мероприятия</h5>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Название блюда</th>
+            <th>Количество</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="planning : ${event.eventPlannings}">
+            <td th:text="${planning.menu.name}"></td>
+            <td th:text="${planning.quantity}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

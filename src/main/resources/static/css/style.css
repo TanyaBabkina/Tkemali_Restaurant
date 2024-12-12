@@ -1,0 +1,24 @@
+.rounded-circle {
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border: 5px solid #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container h2 {
+    font-size: 2.5em;
+    margin-bottom: 0.5em;
+}
+
+.container p {
+    font-size: 1.2em;
+    margin-bottom: 0.5em;
+}
+
+.container h3 {
+    font-size: 1.8em;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}

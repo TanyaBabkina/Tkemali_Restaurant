@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${restaurantName}">Главная страница</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<script src="/js/token-check.js"></script>
+<!-- Подключение общего хедера -->
+<header th:replace="includes/header :: header"></header>
+
+<!-- Главный баннер -->
+<section class="main-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1>Добро пожаловать в Tkemali</h1>
+                <p>Лучшие блюда грузинской кухни</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Сегодняшнее предложение -->
+<section class="special-offer container mt-4">
+    <h2>Сегодняшнее предложение</h2>
+    <p th:text="${specialOffer}">Скидка 10% на все блюда!</p>
+</section>
+
+<!-- Популярные блюда -->
+<section class="popular-dishes container mt-4">
+    <h2>Популярные блюда</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <img src="/img/dish1.jpeg" class="card-img-top" alt="Блюдо 1">
+                <div class="card-body">
+                    <h5 class="card-title">Хачапури</h5>
+                    <p class="card-text">Традиционное грузинское блюдо с сыром.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <img src="/img/dish2.jpg" class="card-img-top" alt="Блюдо 2">
+                <div class="card-body">
+                    <h5 class="card-title">Хинкали</h5>
+                    <p class="card-text">Грузинские пельмени с мясом.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <img src="/img/dish3.png" class="card-img-top" alt="Блюдо 3">
+                <div class="card-body">
+                    <h5 class="card-title">Лобио</h5>
+                    <p class="card-text">Фасоль, приготовленная с грузинскими специями.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Подключение общего футера -->
+<footer th:replace="includes/footer :: footer"></footer>
+
+<!-- Bootstrap JS и зависимости -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/js/url-init.js"></script>
+<script src="/js/logout.js"></script>
+</body>
+</html>
