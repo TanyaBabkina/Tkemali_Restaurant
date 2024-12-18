@@ -14,12 +14,13 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(EmailAlreadyExistsException.class)
-    public ModelAndView handleEmailAlreadyExists(EmailAlreadyExistsException ex) {
-        ModelAndView modelAndView = new ModelAndView("profile");
-        modelAndView.addObject("errorMessage", ex.getMessage());
-        return modelAndView;
-    }
+//    @ExceptionHandler(EmailAlreadyExistsException.class)
+//    public ModelAndView handleEmailAlreadyExists(EmailAlreadyExistsException ex) {
+//        ModelAndView modelAndView = new ModelAndView("profile");
+//        modelAndView.addObject("errorMessage", ex.getMessage());
+//        return modelAndView;
+//    }
+
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiError> handleNotFound(ResourceNotFoundException ex) {

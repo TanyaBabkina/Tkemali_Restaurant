@@ -33,12 +33,6 @@ public class JwtService {
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
-    private List<String> extractRoles(String token) {
-        Claims claims = extractAllClaims(token);
-        System.out.print("ROLESSSSS --");
-        System.out.println((List<String>) claims.get("roles"));
-        return (List<String>) claims.get("roles");
-    }
 
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
@@ -63,7 +57,16 @@ public class JwtService {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(authority -> authority.getAuthority())
+                .toList();
+        claims.put("roles", roles);
         return createToken(claims, userDetails);
+    }
+
+    public List<String> extractRoles(String token) {
+        Claims claims = extractAllClaims(token);
+        return (List<String>) claims.get("roles");
     }
 
     private String createToken(Map<String, Object> claims, UserDetails userDetails) {

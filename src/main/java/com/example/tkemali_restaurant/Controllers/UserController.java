@@ -57,6 +57,7 @@ public class UserController {
 @PostMapping("/add")
 public ResponseEntity<?> addUser(@RequestBody User user) {
     try {
+
         userService.registerUser(user);
         return ResponseEntity.ok().build(); // Успешное добавление
     } catch (EmailAlreadyExistsException e) {

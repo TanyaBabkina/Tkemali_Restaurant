@@ -32,3 +32,4 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
         console.error('Ошибка:', error);
     }
 });
+

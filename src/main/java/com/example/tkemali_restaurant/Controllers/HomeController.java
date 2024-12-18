@@ -1,6 +1,7 @@
 package com.example.tkemali_restaurant.Controllers;
 import com.example.tkemali_restaurant.models.Menu;
 import com.example.tkemali_restaurant.Repository.MenuRepository;
+import com.example.tkemali_restaurant.models.User;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,9 +30,11 @@ public class HomeController {
     }
 
     @GetMapping("/register")
-    public String showRegisterPage() {
+    public String showRegisterPage(Model model) {
+        model.addAttribute("user", new User());
         return "register";
     }
+
 
     @GetMapping("/home/about")
     //@PreAuthorize("hasAnyRole('ADMIN', 'USER')")

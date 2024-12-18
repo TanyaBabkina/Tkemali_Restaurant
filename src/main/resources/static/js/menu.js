@@ -42,13 +42,18 @@ function renderMenu(menuItems) {
                     <p class="card-text font-weight-bold">${product.price} руб.</p>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="/home/menu/edit/${product.id}" class="btn btn-primary">Редактировать</a>
-                    <a href="/home/menu/delete/${product.id}" class="btn btn-danger">Удалить</a>
+                    <a href="/home/menu/edit/${product.id}" class="btn btn-primary edit-button">Редактировать</a>
+                    <a href="/home/menu/delete/${product.id}" class="btn btn-danger delete-button">Удалить</a>
                 </div>
             </div>
         `;
         menuContainer.appendChild(productCard);
     });
+    if (!isAdmin) {
+        document.querySelectorAll('.edit-button, .delete-button').forEach(button => {
+            button.style.display = 'none';
+        });
+    }
 }
 
 
